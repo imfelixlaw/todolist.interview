@@ -1,0 +1,76 @@
+@WebApplication1_HostAddress = http://localhost:5141
+@contentType = application/json
+@username = "user1"
+@password = "password1"
+
+###############################################################################################################
+### 1. API --- Authentication
+POST {{WebApplication1_HostAddress}}/User/authenticate
+Content-Type: {{contentType}}
+
+{
+  "username": {{username}},
+  "password": {{password}}
+}
+###
+
+###############################################################################################################
+@accessToken = dXNlcjE6cGFzc3dvcmQx
+### 2. API --- Get All Todo, no parameter
+GET {{WebApplication1_HostAddress}}/api/todo
+Authorization: Basic {{accessToken}}
+###
+
+### 2. API --- Get All Todo, sort by name
+#    Name = 0,
+#    Status = 1,
+#    DueDate = 2,
+GET {{WebApplication1_HostAddress}}/api/todo?SortBy=0&IsSortAsc=true
+Authorization: Basic {{accessToken}}
+###
+
+###############################################################################################################
+### 3. API --- Create New Todo
+POST {{WebApplication1_HostAddress}}/api/todo
+Content-Type: {{contentType}}
+Authorization: Basic {{accessToken}}
+
+{
+  "userId": {{username}},
+  "name": "AAAtesting new todo 1",
+  "description": "new todo testing",
+  "duetoDateTime": "2023-11-19",
+  "status": 0
+}
+###
+
+###############################################################################################################
+@toupdate = b18f289b-4d94-4c34-88cc-efe5259714cf
+### 4. API -- Update Todo
+PUT {{WebApplication1_HostAddress}}/api/todo/{{toupdate}}
+Content-Type: {{contentType}}
+Authorization: Basic {{accessToken}}
+
+{
+  "userId": {{username}},
+  "name": "testing new todo 1",
+  "description": "Just to update new desc",
+  "duetoDateTime": "2024-11-19",
+  "status": 0,
+  "priority": 1,
+  "tags": "tag1,tag2"
+}
+###
+
+###############################################################################################################
+### 5. API -- Get Single Todo
+GET {{WebApplication1_HostAddress}}/api/todo/{{toupdate}}
+Authorization: Basic {{accessToken}}
+###
+
+###############################################################################################################
+@todelete = d1c9e5f8-3364-41bb-a4d7-8dc3f54d2a21
+### 6. API --- Delete Todo
+DELETE {{WebApplication1_HostAddress}}/api/todo/{{todelete}}
+Authorization: Basic {{accessToken}}
+###
